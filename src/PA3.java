@@ -1,6 +1,29 @@
 import java.util.Scanner;
 
 public class PA3 {
+    /**
+     * Compare and pick the approach that costs less.
+     *
+     * @param total
+     * @param remain
+     * @param oneByOneCost
+     * @param halfCost
+     */
+    public static int decide(int total, int remain, int oneByOneCost, int halfCost) {
+        if (total <= remain) {
+            return 0;
+        }
+        int cost = 0;
+        int halfOfTotal = total / 2 + 1;
+        if (halfCost <= halfOfTotal * oneByOneCost) {
+            cost = cost + halfCost;
+            return cost + decide(total - halfOfTotal, remain, oneByOneCost, halfCost);
+        } else {
+            cost = cost + oneByOneCost;
+            return cost + decide(total - 1, remain, oneByOneCost, halfCost);
+        }
+    }
+
     public static void main(String[] args) {
         Scanner inputScan = new Scanner(System.in);
         int testCases = inputScan.nextInt();
@@ -20,13 +43,25 @@ public class PA3 {
             int[] c = new int[comp];
             /* Array of costs for removing half of a group of zombies */
             int[] d = new int[comp];
-            while (lineScan.hasNextLine()) {
+            for (int j = 0; j < comp; j++) {
                 String compLine = inputScan.nextLine();
                 Scanner compInfo = new Scanner(compLine);
-                companies[i] = compInfo.next();
-                c[i] = compInfo.nextInt();
-                d[i] = compInfo.nextInt();
-                i++;
+                companies[j] = compInfo.next();
+                c[j] = compInfo.nextInt();
+                d[j] = compInfo.nextInt();
+            }
+            /* testing input reading functionality */
+//            System.out.println(testCases);
+//            System.out.println(total);
+//            System.out.println(remain);
+//            System.out.println(comp);
+//            for (int j = 0; j < comp; j++) {
+//                System.out.println(companies[j] + " " + c[j] + " " + d[j]);
+//            }
+            /* test passed, TODO: implement algorithm */
+            System.out.println("Case " + i);
+            for (int j = 0; j < comp; j++) {
+                System.out.println(companies[j] + "" + decide(total, remain, c[j], d[j]));
             }
         }
     }
