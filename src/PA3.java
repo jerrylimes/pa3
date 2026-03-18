@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PA3 {
@@ -13,14 +14,14 @@ public class PA3 {
         if (total <= remain) {
             return 0;
         }
-        int cost = 0;
-        int halfOfTotal = total / 2 + 1;
+        int halfOfTotal = (total + 1) / 2;
+        if (total - halfOfTotal < remain) {
+            return oneByOneCost + decide(total - 1, remain, oneByOneCost, halfCost);
+        }
         if (halfCost <= halfOfTotal * oneByOneCost) {
-            cost = cost + halfCost;
-            return cost + decide(total - halfOfTotal, remain, oneByOneCost, halfCost);
+            return halfCost + decide(total - halfOfTotal, remain, oneByOneCost, halfCost);
         } else {
-            cost = cost + oneByOneCost;
-            return cost + decide(total - 1, remain, oneByOneCost, halfCost);
+            return oneByOneCost + decide(total - 1, remain, oneByOneCost, halfCost);
         }
     }
 
@@ -59,9 +60,14 @@ public class PA3 {
 //                System.out.println(companies[j] + " " + c[j] + " " + d[j]);
 //            }
             /* test passed, TODO: implement algorithm */
-            System.out.println("Case " + i);
+            System.out.println("Case " + (i + 1));
+            int[] costs = new int[comp];
             for (int j = 0; j < comp; j++) {
-                System.out.println(companies[j] + "" + decide(total, remain, c[j], d[j]));
+                costs[j] = decide(total, remain, c[j], d[j]);
+            }
+            Arrays.sort(costs);
+            for (int j = 0; j < comp; j++) {
+                System.out.println(companies[j] + " " + costs[j]);
             }
         }
     }
