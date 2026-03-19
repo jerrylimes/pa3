@@ -2,6 +2,16 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class PA3 {
+    public static class Company {
+        String name;
+        int cost;
+
+        public Company(String compName, int compCost) {
+            name = compName;
+            cost = compCost;
+        }
+    }
+
     /**
      * Compare and pick the approach that costs less.
      *
@@ -61,13 +71,20 @@ public class PA3 {
 //            }
             /* test passed, TODO: implement algorithm */
             System.out.println("Case " + (i + 1));
-            int[] costs = new int[comp];
+            Company[] compWithCosts = new Company[comp];
             for (int j = 0; j < comp; j++) {
-                costs[j] = decide(total, remain, c[j], d[j]);
+                int cost = decide(total, remain, c[j], d[j]);
+                compWithCosts[j] = new Company(companies[j], cost);
             }
-            Arrays.sort(costs);
+            Arrays.sort(compWithCosts, (a, b) -> {
+                if (a.cost != b.cost) {
+                    return Integer.compare(a.cost, b.cost);
+                }
+                /* If two companies end up having the same cost, return the one that's higher in ASCII */
+                return a.name.compareTo(b.name);
+            });
             for (int j = 0; j < comp; j++) {
-                System.out.println(companies[j] + " " + costs[j]);
+                System.out.println(compWithCosts[j].name + " " + compWithCosts[j].cost);
             }
         }
     }
